@@ -235,6 +235,7 @@ void write_to_file() {
     FILE *f;
     f = fopen("machines.bin", "a");
 
+    // Write each machine to file
     for(int i = 0; i < MAX_MACHINE_COUNT; i++) {
         struct machine m = machines[i];
         

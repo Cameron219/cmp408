@@ -3,8 +3,9 @@
         $pin = $_POST['pin'];
         $status = $_POST['status'];
 
-        die($pin . " : ". $status);
-        // echo shell_exec('usertest write ' . $pin . ' ' . $status);
+        //die($pin . " : ". $status);
+        echo shell_exec('sudo /home/pi/usertest writepin ' . $pin . ' ' . $status);
+	die();
     }
 ?>
 
