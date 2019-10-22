@@ -2,7 +2,8 @@
  ============================================================================
  Name        : piiotest.c
  Author      : AR
- Version     :
+ Modified By : Cameron McCallion
+ Version     : 0.1
  Copyright   : See Abertay copyright notice
  Description : Test application for piio driver
  ============================================================================
@@ -14,7 +15,7 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-#include"piio.h"
+#include "piio.h"
 
 /*
  * Functions for the ioctl calls
@@ -67,7 +68,7 @@ int main(int argc, char *argv[]) {
 	int fd, ret;
 	char *msg = "Message passed by ioctl\n";
 
-	fd = open("//dev//piiodev", O_RDWR);
+	fd = open("//dev//dCameronMcCallion", O_RDWR);
 	if (fd < 0) {
 		printf("Can't open device file: %s\n", DEVICE_NAME);
 		exit(-1);
@@ -84,19 +85,26 @@ int main(int argc, char *argv[]) {
 			write_to_driver(fd);
 		}
 
-		if (!strncmp(argv[1], "readpin", 8)) {
+		if (!strncmp(argv[1], "read", 8)) {
 			/*  Pass GPIO struct with IO control */
 			memset(&apin , 0, sizeof(apin));
-			strcpy(apin.desc, "Details");
+			strcpy(apin.desc, "LKMpin");
 			apin.pin =  strtol (argv[2],NULL,10);
 			/* Pass 'apin' struct to 'fd' with IO control*/
-			printf("READ:Requested  pin:%i - val:%i - desc:%s\n" , apin.pin , apin.value, apin.desc);
-}
+		        ret = ioctl(fd, IOCTL_PIIO_GPIO_READ, &apin);
 
-		if (!strncmp(argv[1], "writepin", 9)) {
+		        if (ret < 0) {
+				printf("Function failed:%d\n", ret);
+				exit(-1);
+		        }
+
+			printf("READ:Requested  pin:%i - val:%i - desc:%s\n" , apin.pin , apin.value, apin.desc);
+		}
+
+		if (!strncmp(argv[1], "write", 9)) {
 			/*  Pass GPIO struct with IO control */
 			memset(&apin , 0, sizeof(apin));
-			strcpy(apin.desc, "desc");
+			strcpy(apin.desc, "WriteOpt");
 			apin.pin = strtol(argv[2],NULL,10);
 			apin.value = strtol(argv[3],NULL,10);
 			/* Pass 'apin' struct to 'fd' with IO control*/
@@ -105,20 +113,20 @@ int main(int argc, char *argv[]) {
 		}
 
 		if(!strncmp(argv[1], "toggle", 10)) {
-                        memset(&apin, 0, sizeof(apin));
-                        strcpy(apin.desc, "tgl");
-                        apin.pin = strtol(argv[2], NULL, 10);
-                        apin.value = strtol(argv[3], NULL, 10);
-                        int count = strtol(argv[4], NULL, 10);
-                        int interval = strtol(argv[5], NULL, 10);
+			memset(&apin, 0, sizeof(apin));
+			strcpy(apin.desc, "tgl");
+			apin.pin = strtol(argv[2], NULL, 10);
+			apin.value = strtol(argv[3], NULL, 10);
+			int count = strtol(argv[4], NULL, 10);
+			int interval = strtol(argv[5], NULL, 10);
 			int i;
-                        for(i = 0; i < count; i++) {
-                                printf("TOGGLE:Requesting pin:%i - val:%i - desc:%s\n", apin.pin, apin.value, apin.desc);
-                                ret = ioctl(fd, IOCTL_PIIO_GPIO_WRITE, &apin);
-                                usleep(interval);
-                                apin.value = apin.value == 1 ? 0 : 1;
-                        }
-                }
+			for(i = 0; i < count; i++) {
+					printf("TOGGLE:Requesting pin:%i - val:%i - desc:%s\n", apin.pin, apin.value, apin.desc);
+					ret = ioctl(fd, IOCTL_PIIO_GPIO_WRITE, &apin);
+					usleep(interval);
+					apin.value = apin.value == 1 ? 0 : 1;
+			}
+		}
 
 
 

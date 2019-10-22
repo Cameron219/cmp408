@@ -1,3 +1,4 @@
+
 /*
  ============================================================================
  Name        : piio.h - the header file with four IO controls
@@ -30,7 +31,7 @@ typedef struct gpio_pin {
 #define IOCTL_PIIO_GPIO_READ 0x67
 #define IOCTL_PIIO_GPIO_WRITE 0x68
 
-#define  DEVICE_NAME "piiodev"
+#define  DEVICE_NAME "dCameronMcCallion"
 #define  CLASS_NAME  "piiocls"
 
 #endif
