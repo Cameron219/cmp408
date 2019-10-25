@@ -59,7 +59,7 @@
     <body>
             <div class="pin-container">
                 <span class="label">Pin # </span>
-                <input type="text" name="pin" id="pin" maxlength="2" value="23" autocomplete="off"/>
+                <input type="text" name="pin" id="pin" maxlength="2" autocomplete="off" autofocus/>
                 <br/><span class="loading">Loading...</span>
             </div>
             <img class="light" id="light-on" src="light-on.png" alt="on"/>
@@ -163,7 +163,5 @@
                 }
             }, 400);
         }, true);
-
-        read_value(23);
     </script>
 </html>
