@@ -1,13 +1,37 @@
 <?php
     if(isset($_POST['read'])) {
-        echo shell_exec("sudo /home/pi/usertest read " . $_POST['pin']);
-        die("");
+        if(isset($_POST['pin'])) {
+            $pin = trim($_POST['pin']);
+            if(is_numeric($pin) && $pin >= 0 && $pin <= 30) {
+                echo "Valid\n";
+                echo shell_exec("sudo /home/pi/usertest read " . $_POST['pin']);
+            } else {
+                echo "Invalid Pin";
+            }
+        } else {
+            echo "No pin specified";
+        }
+        die();
     } else if(isset($_POST['write'])) {
-        echo shell_exec("sudo /home/pi/usertest write " . $_POST['pin'] . " " . $_POST['value']);
-        die("");
+        if(isset($_POST['pin']) && isset($_POST['value'])){
+            $pin = trim($_POST['pin']);
+            $value = trim($_POST['value']);
+            if($value == "0" || $value == "1"){
+                if(is_numeric($pin) && $pin >= 0 && $pin <= 30){
+                    echo "Valid\n";
+                    echo shell_exec("sudo /home/pi/usertest write " . $_POST['pin'] . " " . $_POST['value']);
+                } else {
+                    echo "Invalid Pin";
+                }
+            } else {
+                echo "Invalid Pin Status";
+            }
+        } else {
+            echo "No Pin/Value specified";
+        }
+        die();
     }
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,8 +61,8 @@
                 font-size: 128px;
                 width: 150px;
                 background: #310542;
-		border: none;
-		border-bottom: solid 1px white;
+                border: none;
+                border-bottom: solid 1px white;
                 color: white;
             }
 
