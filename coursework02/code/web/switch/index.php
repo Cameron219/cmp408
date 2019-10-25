@@ -37,7 +37,8 @@
                 font-size: 128px;
                 width: 150px;
                 background: #310542;
-                border: none;
+		border: none;
+		border-bottom: solid 1px white;
                 color: white;
             }
 
