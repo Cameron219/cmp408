@@ -3,9 +3,22 @@
         $pin = $_POST['pin'];
         $status = $_POST['status'];
 
-        //die($pin . " : ". $status);
-        echo shell_exec('sudo /home/pi/usertest write ' . $pin . ' ' . $status);
-	die();
+        echo $pin . " : " . $status . "\n";
+
+        if($status == "0" || $status == "1") {
+            if($pin == 0 || is_numeric($pin)) {
+                if($pin >= 0 && $pin <= 30) {
+                    echo shell_exec('sudo /home/pi/usertest write ' . $pin . ' ' . $status);
+                    die("VALID");
+                } else {
+                    die("Invalid Pin: Enter a number between 0 - 30.");
+                }
+            } else {
+                die("Invalid Pin");
+            }
+        } else {
+            die("Invalid Status");
+        }
     }
 ?>
 
